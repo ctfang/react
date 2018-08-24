@@ -9,7 +9,6 @@
 namespace ReactApp\Providers;
 
 use App\App;
-use Apps\WebSocket\Events\WsEvent;
 use GatewayWorker\Gateway;
 use ReactApp\Annotations\Service;
 
