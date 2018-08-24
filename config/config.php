@@ -11,8 +11,8 @@ return [
      * http服务设置
      */
     'http'       => [
-        'port'  => env('HTTP_PORT', 8080),
-        'count' => env('HTTP_COUNT', 1),
+        'socket' => env('HTTP_SOCKET', 'http://0.0.0.0:8080'),
+        'count'  => env('HTTP_COUNT', 1),
     ],
 
     /**
@@ -27,14 +27,14 @@ return [
     ],
 
     'business' => [
-        'name'       => env('GATEWAY_NAME', 'MyWsApp'),
-        'count'      => env('GATEWAY_COUNT', 1),
+        'name'  => env('BUSINESS_NAME', 'MyWsApp'),
+        'count' => env('BUSINESS_COUNT', 1),
     ],
 
     /**
      * WebSocket配置
      */
-    'gateway' => [
+    'gateway'  => [
         'socket'     => env('GATEWAY_SOCKET', 'ws://0.0.0.0:8070'),
         'name'       => env('GATEWAY_NAME', 'ws'),
         'lan_ip'     => env('GATEWAY_LANIP', '127.0.0.1'),

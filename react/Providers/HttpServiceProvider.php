@@ -25,8 +25,6 @@ class HttpServiceProvider implements ServiceProviderInterface
 {
     protected $socket = "http://0.0.0.0";
 
-    protected $port = 80;
-
     protected $count = 1;
 
     /**
@@ -47,7 +45,7 @@ class HttpServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        $this->port  = App::config('http.port', 8080);
+        $this->socket  = App::config('http.socket', 'http://0.0.0.0:8080');
         $this->count = App::config('http.count');
     }
 
@@ -58,7 +56,7 @@ class HttpServiceProvider implements ServiceProviderInterface
             $dispatcher = App::getService('dispatcher');
             return $dispatcher->dispatch($request);
         });
-        $socket        = new Worker("http://0.0.0.0:{$this->port}");
+        $socket        = new Worker($this->socket);
 
         if( App::isLinux() ){
             $socket->count = $this->count;
