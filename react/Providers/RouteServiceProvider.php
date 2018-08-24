@@ -23,7 +23,7 @@ use ReflectionClass;
  * @Service(name="route")
  * @package ReactApp\Providers
  */
-class RouteServiceProvider extends ServiceProvider
+class RouteServiceProvider implements ServiceProviderInterface
 {
     protected $namespaces = ["App\\Controllers\\"];
 
@@ -37,8 +37,6 @@ class RouteServiceProvider extends ServiceProvider
      * 加载过程触发
      *
      * @return void
-     * @throws \Doctrine\Common\Annotations\AnnotationException
-     * @throws \ReflectionException
      */
     public function boot()
     {
@@ -85,9 +83,9 @@ class RouteServiceProvider extends ServiceProvider
                 foreach ($classAnnotations AS $annotation) {
                     if ($annotation instanceof Middleware) {
                         $queue[] = $annotation->getClass();;
-                    }elseif ($annotation instanceof Middlewares){
+                    } elseif ($annotation instanceof Middlewares) {
                         /** @var Middleware $middleware */
-                        foreach ($annotation->getMiddlewares() as $middleware){
+                        foreach ($annotation->getMiddlewares() as $middleware) {
                             $queue[] = $middleware->getClass();
                         }
                     }
@@ -101,11 +99,11 @@ class RouteServiceProvider extends ServiceProvider
 
                         if (!isset($this->routes[$key])) {
                             $routeHelper = new RouteHelper();
-                            foreach ($queue as $mid){
+                            foreach ($queue as $mid) {
                                 $routeHelper->addMiddleware(new $mid());
                             }
                             $this->routes[$key] = $routeHelper;
-                        }else{
+                        } else {
                             /** @var RouteHelper $routeHelper */
                             $routeHelper = $this->routes[$key];
                         }
@@ -124,9 +122,9 @@ class RouteServiceProvider extends ServiceProvider
                         } elseif ($annotation instanceof Middleware) {
                             $mid = $annotation->getClass();
                             $routeHelper->addMiddleware(new $mid());
-                        }elseif ($annotation instanceof Middlewares){
+                        } elseif ($annotation instanceof Middlewares) {
                             /** @var Middleware $middleware */
-                            foreach ($annotation->getMiddlewares() as $middleware){
+                            foreach ($annotation->getMiddlewares() as $middleware) {
                                 $mid = $middleware->getClass();
                                 $routeHelper->addMiddleware(new $mid());
                             }

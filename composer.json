@@ -5,7 +5,7 @@
             "ReactApp\\": "react/"
         },
         "files": [
-            "app/App.php"
+            "react//Helper/Functions.php"
         ]
     },
     "scripts": {
@@ -30,6 +30,8 @@
         "symfony/var-dumper": "^4.1",
         "middlewares/request-handler": "^1.1",
         "middlewares/fast-route": "^1.0",
-        "middlewares/whoops": "^1.1"
+        "middlewares/whoops": "^1.1",
+        "workerman/workerman": "^3.5",
+        "hassankhan/config": "^1.0"
     }
 }

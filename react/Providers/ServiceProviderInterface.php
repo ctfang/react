@@ -9,19 +9,19 @@
 namespace ReactApp\Providers;
 
 
-abstract class ServiceProvider
+interface ServiceProviderInterface
 {
     /**
      * 加载过程触发
      *
      * @return void
      */
-    abstract public function boot();
+    public function boot();
 
     /**
      * 所有服务加载后，注册触发，
      *
      * @return void
      */
-    abstract public function register();
+    public function register();
 }

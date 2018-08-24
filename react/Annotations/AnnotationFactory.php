@@ -9,11 +9,9 @@
 namespace ReactApp\Annotations;
 
 use App\App;
-use Composer\Autoload\ClassLoader;
 use Doctrine\Common\Annotations\AnnotationReader;
 use ReactApp\Helper\DirectoryHelper;
-use ReactApp\Providers\ServiceProvider;
-use ReactApp\ReactApp;
+use ReactApp\Providers\ServiceProviderInterface;
 use ReflectionClass;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
@@ -60,17 +58,30 @@ class AnnotationFactory
 
                 foreach ($classAnnotations AS $annotation) {
                     if ($annotation instanceof Service) {
-                        /** @var ServiceProvider $object */
-                        $object = new $class();
-                        $object->boot();
-                        $serviceAnnotations[] = $annotation->name;
-                        App::setService($annotation->name,$object);
+                        $annotation->className = $class;
+                        $serviceAnnotations[($annotation->sort+10000).$class] = $annotation;
                     }
                 }
             }
         }
-        foreach ($serviceAnnotations as $name){
+        ksort($serviceAnnotations);
+
+        foreach ($serviceAnnotations as $key=>$annotation){
+            unset($serviceAnnotations[$key]);
+            $class = $annotation->className;
+            $serviceAnnotations[$annotation->name] = new $class();
+        }
+        /** @var ServiceProviderInterface $object */
+        foreach ($serviceAnnotations as $name=>$object){
+            $object->boot();
+            $serviceAnnotations[$name] = $object;
+        }
+        foreach ($serviceAnnotations as $name=>$object){
+            App::setService($name,$object);
+        }
+        foreach ($serviceAnnotations as $name=>$object){
             App::getService($name)->register();
         }
+        unset($serviceAnnotations);
     }
 }

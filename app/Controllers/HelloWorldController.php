@@ -14,10 +14,20 @@ use ReactApp\Annotations\RequestMapping;
 class HelloWorldController
 {
     /**
+     * 全局路由
      * @RequestMapping("/")
+     */
+    public function helloWorld()
+    {
+        return "helloWorld";
+    }
+
+    /**
+     * 全局路由
+     * @RequestMapping("/error")
      */
     public function index()
     {
-        tefgg();
+        throw new \Exception("错误界面显示");
     }
 }

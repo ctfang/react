@@ -17,9 +17,11 @@ namespace ReactApp\Annotations;
 class Service
 {
     public $name;
+    public $sort = 100;
 
     public function __construct(array $values)
     {
         $this->name = $values["name"]??$values["value"];
+        $this->sort = $values["sort"]??100;
     }
 }

@@ -14,17 +14,15 @@ use ReactApp\Annotations\Service;
 
 /**
  * Class EnvServiceProvider
- * @Service("env")
+ * @Service("env",sort="1")
  * @package ReactApp\Providers
  */
-class EnvServiceProvider extends ServiceProvider
+class EnvServiceProvider implements ServiceProviderInterface
 {
     /**
-     * 加载过程触发
-     *
      * @return void
      */
-    public function boot()
+    public function __construct()
     {
         if (!file_exists(__ROOT_PATH__ . '/.env')) {
             if (!file_exists(__ROOT_PATH__ . '/.env.example')) {
@@ -73,5 +71,15 @@ class EnvServiceProvider extends ServiceProvider
     public function register()
     {
         // TODO: Implement register() method.
+    }
+
+    /**
+     * 加载过程触发
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        // TODO: Implement boot() method.
     }
 }

@@ -9,9 +9,9 @@
 namespace App\Providers;
 
 
-use ReactApp\Providers\ServiceProvider;
+use ReactApp\Providers\ServiceProviderInterface;
 
-class EmailServiceProvider extends ServiceProvider
+class EmailServiceProvider implements ServiceProviderInterface
 {
 
     /**

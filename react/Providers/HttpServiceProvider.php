@@ -7,24 +7,22 @@
  */
 
 namespace ReactApp\Providers;
+
 use App\App;
+use Middlewares\Utils\Factory;
 use Psr\Http\Message\ServerRequestInterface;
-use React\EventLoop\Factory;
-use React\EventLoop\LoopInterface;
-use React\Http\Response;
-use React\Http\Server;
 use ReactApp\Annotations\Service;
-use ReactApp\Factorys\CreateReactResponse;
+use ReactApp\Factorys\CreateWorkermenResponse;
+use ReactApp\Http\Server;
+use Workerman\Worker;
 
 /**
  * Class AppServiceProvider
  * @Service("http")
  * @package ReactApp\Providers
  */
-class HttpServiceProvider extends ServiceProvider
+class HttpServiceProvider implements ServiceProviderInterface
 {
-    /** @var LoopInterface */
-    private $loop;
     /**
      * 加载过程触发
      *
@@ -32,30 +30,28 @@ class HttpServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loop = Factory::create();
-
-        \Middlewares\Utils\Factory::setResponseFactory(new CreateReactResponse());
     }
 
     /**
      * 所有服务加载后，注册触发，
      *
      * @return void
+     * @throws \Exception
      */
     public function register()
     {
-        $server = new Server(function (ServerRequestInterface $request) {
+        $httpPort = App::config('http.port', 8080);
+
+        Factory::setResponseFactory(new CreateWorkermenResponse());
+
+        $server        = new Server(function (ServerRequestInterface $request) {
             /** @var DispatcherServiceProvider $dispatcher */
             $dispatcher = App::getService('dispatcher');
             return $dispatcher->dispatch($request);
         });
+        $socket        = new Worker("http://0.0.0.0:{$httpPort}");
+        $socket->count = App::config('http.count');
 
-        $socket = new \React\Socket\Server(8070, $this->loop);
         $server->listen($socket);
-    }
-
-    public function run()
-    {
-        $this->loop->run();
     }
 }

@@ -13,5 +13,8 @@ use ReactApp\ReactApp;
 
 class App extends ReactApp
 {
-
+    public static function isLinux()
+    {
+        return strstr(PHP_OS, 'WIN') ? false :true;
+    }
 }

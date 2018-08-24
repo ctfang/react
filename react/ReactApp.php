@@ -10,8 +10,7 @@ namespace ReactApp;
 
 
 use Composer\Autoload\ClassLoader;
-use ReactApp\Annotations\AnnotationFactory;
-use ReactApp\Providers\ServiceProvider;
+use ReactApp\Providers\ServiceProviderInterface;
 
 class ReactApp
 {
@@ -24,7 +23,7 @@ class ReactApp
      * 获取服务对象
      *
      * @param $name
-     * @return ServiceProvider|null
+     * @return ServiceProviderInterface|null
      */
     public static function getService($name)
     {
@@ -35,9 +34,9 @@ class ReactApp
      * 设置服务
      *
      * @param string $name
-     * @param ServiceProvider $object
+     * @param ServiceProviderInterface $object
      */
-    public static function setService(string $name,ServiceProvider $object)
+    public static function setService(string $name,ServiceProviderInterface $object)
     {
         self::$service[$name] =$object;
     }
@@ -57,5 +56,15 @@ class ReactApp
     public static function getLoader()
     {
         return self::$loader;
+    }
+
+    /**
+     * @param $key
+     * @param null $default
+     * @return string|array|null
+     */
+    public static function config($key,$default=null)
+    {
+        return self::$service["config"]->get($key,$default);
     }
 }

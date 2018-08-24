@@ -20,7 +20,7 @@ use Relay\RequestHandler;
  * @Service("dispatcher")
  * @package ReactApp\Providers
  */
-class DispatcherServiceProvider extends ServiceProvider
+class DispatcherServiceProvider implements ServiceProviderInterface
 {
     /** @var RequestHandler */
     private $relay;

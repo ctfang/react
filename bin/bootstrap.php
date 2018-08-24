@@ -9,11 +9,11 @@
 use App\App;
 use ReactApp\Annotations\AnnotationFactory;
 
-$loader = require '../vendor/autoload.php';
+$loader = require __DIR__.'/../vendor/autoload.php';
+require '../react/Helper/Functions.php';
 App::setLoader($loader);
 /** 注释初始化 */
 AnnotationFactory::init(['App\\Providers\\', 'ReactApp\\Providers\\']);
-
-/** @var \ReactApp\Providers\HttpServiceProvider $http */
-$http = App::getService('http');
-$http->run();
+/** @var \ReactApp\Providers\LoopServiceProvider $loop */
+$loop = App::getService("loop");
+$loop->run();

@@ -6,8 +6,6 @@
  * Time: 18:10
  */
 
-use App\App;
-
 if (! function_exists('env')) {
     /**
      * Gets the value of an environment variable.
@@ -20,7 +18,7 @@ if (! function_exists('env')) {
     {
         $value = getenv($key);
 
-        if ($value === null) {
+        if ($value === false) {
             return $default;
         }
 
