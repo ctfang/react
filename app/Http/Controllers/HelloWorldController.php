@@ -2,13 +2,13 @@
 /**
  * Created by PhpStorm.
  * User: 明月有色
- * Date: 2018/8/14
- * Time: 15:05
+ * Date: 2018/8/24
+ * Time: 16:30
  */
 
-namespace App\Controllers;
+namespace App\Http\Controllers;
 
-
+use React\Http\Response;
 use ReactApp\Annotations\RequestMapping;
 
 class HelloWorldController
@@ -19,12 +19,12 @@ class HelloWorldController
      */
     public function helloWorld()
     {
-        return "helloWorld";
+        return ['time'=>time()];
     }
 
     /**
-     * 全局路由
-     * @RequestMapping("/error")
+     * 错误显示
+     * @RequestMapping("/error")CallableHandler
      */
     public function index()
     {

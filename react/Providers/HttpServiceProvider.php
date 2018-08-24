@@ -23,6 +23,12 @@ use Workerman\Worker;
  */
 class HttpServiceProvider implements ServiceProviderInterface
 {
+    protected $socket = "http://0.0.0.0";
+
+    protected $port = 80;
+
+    protected $count = 1;
+
     /**
      * 加载过程触发
      *
@@ -30,6 +36,7 @@ class HttpServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
+        Factory::setResponseFactory(new CreateWorkermenResponse());
     }
 
     /**
@@ -40,17 +47,22 @@ class HttpServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-        $httpPort = App::config('http.port', 8080);
+        $this->port  = App::config('http.port', 8080);
+        $this->count = App::config('http.count');
+    }
 
-        Factory::setResponseFactory(new CreateWorkermenResponse());
-
+    public function listen()
+    {
         $server        = new Server(function (ServerRequestInterface $request) {
             /** @var DispatcherServiceProvider $dispatcher */
             $dispatcher = App::getService('dispatcher');
             return $dispatcher->dispatch($request);
         });
-        $socket        = new Worker("http://0.0.0.0:{$httpPort}");
-        $socket->count = App::config('http.count');
+        $socket        = new Worker("http://0.0.0.0:{$this->port}");
+
+        if( App::isLinux() ){
+            $socket->count = $this->count;
+        }
 
         $server->listen($socket);
     }

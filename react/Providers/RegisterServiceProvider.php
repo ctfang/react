@@ -2,32 +2,34 @@
 /**
  * Created by PhpStorm.
  * User: 明月有色
- * Date: 2018/8/15
- * Time: 15:16
+ * Date: 2018/8/24
+ * Time: 17:13
  */
 
 namespace ReactApp\Providers;
 
 
 use App\App;
-use React\EventLoop\Factory;
+use GatewayWorker\Register;
 use ReactApp\Annotations\Service;
-use Workerman\Worker;
 
 /**
- * Class LoopServiceProvider
- * @Service("loop",sort="20")
+ * Class RegisterServiceProvider
+ * @Service("register")
  * @package ReactApp\Providers
  */
-class LoopServiceProvider implements ServiceProviderInterface
+class RegisterServiceProvider implements ServiceProviderInterface
 {
+
     /**
      * 加载过程触发
      *
      * @return void
      */
     public function boot()
-    {}
+    {
+        // TODO: Implement boot() method.
+    }
 
     /**
      * 所有服务加载后，注册触发，
@@ -36,11 +38,11 @@ class LoopServiceProvider implements ServiceProviderInterface
      */
     public function register()
     {
-
+        // TODO: Implement boot() method.
     }
 
-    public function run()
+    public function listen()
     {
-        Worker::runAll();
+        new Register(App::config('register.socket'));
     }
 }

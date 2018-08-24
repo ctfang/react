@@ -11,8 +11,10 @@ namespace ReactApp\Http;
 
 use Evenement\EventEmitter;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use ReactApp\Factorys\CreateWorkermenRequest;
 use Workerman\Connection\TcpConnection;
+use Workerman\Protocols\Http;
 use Workerman\Worker;
 
 class Server extends EventEmitter
@@ -43,9 +45,30 @@ class Server extends EventEmitter
             /** @var ResponseInterface $response */
             $response = ($this->requestHandler)($request);
 
-            $connection->send($response->getBody());
+            $this->handleResponse($connection,$response);
         };
 
         $socket->listen();
+    }
+
+    /**
+     * @param TcpConnection $connection
+     * @param ResponseInterface $response
+     */
+    public function handleResponse(TcpConnection $connection, ResponseInterface $response)
+    {
+        $body = $response->getBody();
+        
+        $headers = $response->getHeaders();
+
+        foreach ($headers as $key=>$value){
+            Http::header($key.":".implode(";",$value));
+        }
+
+        $code = $response->getStatusCode();
+
+        Http::header('Http-Code:',false,$code);
+
+        $connection->send($body);
     }
 }

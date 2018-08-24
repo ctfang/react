@@ -9,11 +9,15 @@
 use App\App;
 use ReactApp\Annotations\AnnotationFactory;
 
-$loader = require __DIR__.'/../vendor/autoload.php';
-require '../react/Helper/Functions.php';
+$loader = require __DIR__ . '/../vendor/autoload.php';
 App::setLoader($loader);
+
 /** 注释初始化 */
-AnnotationFactory::init(['App\\Providers\\', 'ReactApp\\Providers\\']);
-/** @var \ReactApp\Providers\LoopServiceProvider $loop */
-$loop = App::getService("loop");
-$loop->run();
+AnnotationFactory::init([
+    'App\\Providers\\',
+    'ReactApp\\Providers\\'
+]);
+
+/** @var \ReactApp\Providers\ConsoleServiceProvider $application */
+$application = App::getService('console');
+$application->run();

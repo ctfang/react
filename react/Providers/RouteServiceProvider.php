@@ -25,7 +25,7 @@ use ReflectionClass;
  */
 class RouteServiceProvider implements ServiceProviderInterface
 {
-    protected $namespaces = ["App\\Controllers\\"];
+    protected $namespaces = ["App\\Http\\Controllers\\"];
 
     private $dispatcher;
 
@@ -61,6 +61,9 @@ class RouteServiceProvider implements ServiceProviderInterface
 
     }
 
+    /**
+     * @return mixed
+     */
     public function getDispatcher()
     {
         return $this->dispatcher;

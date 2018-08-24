@@ -25,66 +25,53 @@ use ReactApp\Providers\RouteServiceProvider;
 class ResponseFactoryMiddleware implements MiddlewareInterface
 {
     /**
-     * @var \FastRoute\Dispatcher FastRoute dispatcher
-     */
-    private $router;
-
-    /**
-     * @var string Attribute name for handler reference
-     */
-    private $attribute = 'request-handler';
-
-    public function __construct()
-    {
-        /** @var RouteServiceProvider $route */
-        $route        = App::getService('route');
-        $this->router = $route->getDispatcher();
-    }
-
-    /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
+     * @throws \Exception
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $route = $this->router->dispatch($request->getMethod(), $request->getUri()->getPath());
+        ob_start();
+        $level = ob_get_level();
 
-        if ($route[0] === \FastRoute\Dispatcher::NOT_FOUND) {
-            return Factory::createResponse(404);
+        try {
+            $return = call_user_func_array($request->getAttribute("request-handler"), [$request,$handler]);
+
+            if ($return instanceof ResponseInterface) {
+                $response = $return;
+                $return = '';
+            } elseif ( is_array($return) ){
+                $response = Factory::createResponse();
+                $response = $response->withAddedHeader("Content-Type",["application/json","charset=utf-8"]);
+                $return   = json_encode($return);
+            }elseif (is_null($return) || is_scalar($return) || (is_object($return) && method_exists($return, '__toString'))) {
+                $response = Factory::createResponse();
+            } else {
+                throw new \UnexpectedValueException(
+                    'The value returned must be scalar or an object with __toString method'
+                );
+            }
+
+            while (ob_get_level() >= $level) {
+                $return = ob_get_clean().$return;
+            }
+
+            $body = $response->getBody();
+
+            if ($return !== '' && $body->isWritable()) {
+                $body->write($return);
+            }
+
+            return $response;
+        } catch (\Exception $exception) {
+            while (ob_get_level() >= $level) {
+                ob_end_clean();
+            }
+
+            throw $exception;
         }
-
-        if ($route[0] === \FastRoute\Dispatcher::METHOD_NOT_ALLOWED) {
-            return Factory::createResponse(405)->withHeader('Allow', implode(', ', $route[1]));
-        }
-
-        foreach ($route[2] as $name => $value) {
-            $request = $request->withAttribute($name, $value);
-        }
-
-        /** @var RouteHelper $routeHelper */
-        $routeHelper = $route[1];
-        $request     = $this->setHandler($request, $routeHelper->getClosure());
-        $queue       = $routeHelper->getMiddleware();
-        $container   = new RequestHandlerContainer();
-        $queue[]     = new RequestHandler($container);
-        $dispatcher  = new Dispatcher($queue);
-
-        return $dispatcher->dispatch($request);
-    }
-
-
-    /**
-     * Set the handler reference on the request.
-     *
-     * @param ServerRequestInterface $request
-     * @param mixed $handler
-     * @return ServerRequestInterface
-     */
-    protected function setHandler(ServerRequestInterface $request, $handler): ServerRequestInterface
-    {
-        return $request->withAttribute($this->attribute, $handler);
     }
 }

@@ -20,9 +20,7 @@
         }
     },
     "require": {
-        "react/event-loop": "^1.0",
         "react/http": "^0.8.3",
-        "react/child-process": "^0.5.2",
         "doctrine/annotations": "^1.6",
         "vlucas/phpdotenv": "^2.5",
         "relay/relay": "2.x@dev",
@@ -32,6 +30,8 @@
         "middlewares/fast-route": "^1.0",
         "middlewares/whoops": "^1.1",
         "workerman/workerman": "^3.5",
-        "hassankhan/config": "^1.0"
+        "hassankhan/config": "^1.0",
+        "symfony/console": "^4.1",
+        "workerman/gateway-worker": "^3.0"
     }
 }
