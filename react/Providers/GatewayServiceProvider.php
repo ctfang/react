@@ -48,13 +48,13 @@ class GatewayServiceProvider implements ServiceProviderInterface
         // gateway名称，status方便查看
         $gateway->name = App::config('gateway.name');
         // gateway进程数
-        $gateway->count = App::config('gateway.count',1);
+        $gateway->count = App::config('gateway.count', 1);
         // 本机ip，分布式部署时使用内网ip
         $gateway->lanIp = App::config('gateway.lan_ip');
         // 内部通讯起始端口，假如$gateway->count=4，起始端口为4000
         // 则一般会使用4000 4001 4002 4003 4个端口作为内部通讯端口
         $gateway->startPort = App::config('gateway.start_port');
         // 服务注册地址
-        $gateway->registerAddress = App::config('register.socket');
+        $gateway->registerAddress = App::config('register.other');
     }
 }

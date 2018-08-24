@@ -36,6 +36,9 @@ class StartCommand extends Command
 
         $http->listen();
 
+        global $argv;
+        $argv[1] = 'start';
+
         Worker::runAll();
     }
 }

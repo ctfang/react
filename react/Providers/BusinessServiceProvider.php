@@ -46,11 +46,11 @@ class BusinessServiceProvider implements ServiceProviderInterface
         // bussinessWorker 进程
         $worker = new BusinessWorker();
         // worker名称
-        $worker->name = App::config('business.name','business');
+        $worker->name = App::config('business.name', 'business');
         // bussinessWorker进程数量
-        $worker->count = App::isLinux()?App::config('business.count'):1;
+        $worker->count = App::isLinux() ? App::config('business.count') : 1;
         // 服务注册地址
-        $worker->registerAddress = App::config('register.socket');
-        $worker->eventHandler = WsEvent::class;
+        $worker->registerAddress = App::config('register.other');;
+        $worker->eventHandler    = WsEvent::class;
     }
 }
