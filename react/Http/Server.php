@@ -43,8 +43,7 @@ class Server extends EventEmitter
             /** @var ResponseInterface $response */
             $response = ($this->requestHandler)($request);
 
-            $connection->send($response->getBody()->getContents());
-            $connection->send($response->getBody()->getContents());
+            $connection->send($response->getBody());
         };
 
         $socket->listen();
