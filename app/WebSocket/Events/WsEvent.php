@@ -9,41 +9,54 @@
 namespace App\WebSocket\Events;
 
 use GatewayWorker\Lib\Gateway;
+use Workerman\Connection\TcpConnection;
+use Workerman\Worker;
 
 class WsEvent
 {
     /**
-     * 当客户端连接时触发
-     * 如果业务不需此回调可以删除onConnect
+     * 进程启动
      *
-     * @param int $client_id 连接id
+     * @param Worker $worker
+     * @return mixed
      */
-    public static function onConnect($client_id)
+    public static function onWorkerStart(Worker $worker)
     {
-        // 向当前client_id发送数据
-        Gateway::sendToClient($client_id, "Hello $client_id\r\n");
-        // 向所有人发送
-        Gateway::sendToAll("$client_id login\r\n");
+
+    }
+
+
+    /**
+     * 连接事件
+     *
+     * @param TcpConnection $connection
+     * @return mixed
+     */
+    public static function onConnect(TcpConnection $connection)
+    {
+
     }
 
     /**
-     * 当客户端发来消息时触发
-     * @param int $client_id 连接id
-     * @param mixed $message 具体消息
+     * 接收信息
+     *
+     * @param TcpConnection $connection
+     * @param string|array $message
+     * @return mixed
      */
-    public static function onMessage($client_id, $message)
+    public static function onMessage(TcpConnection $connection, $message)
     {
-        // 向所有人发送
-        Gateway::sendToAll("$client_id said $message\r\n");
+
     }
 
     /**
-     * 当用户断开连接时触发
-     * @param int $client_id 连接id
+     * 客户端断开触发
+     *
+     * @param TcpConnection $connection
+     * @return mixed
      */
-    public static function onClose($client_id)
+    public static function onClose(TcpConnection $connection)
     {
-        // 向所有人发送
-        GateWay::sendToAll("$client_id logout\r\n");
+
     }
 }

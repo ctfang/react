@@ -9,8 +9,8 @@
 namespace ReactApp\Providers;
 use App\App;
 use App\WebSocket\Events\WsEvent;
-use GatewayWorker\BusinessWorker;
 use ReactApp\Annotations\Service;
+use ReactApp\Protocols\BusinessWorker;
 
 /**
  * Class BusinessServiceProvider
@@ -50,7 +50,7 @@ class BusinessServiceProvider implements ServiceProviderInterface
         // bussinessWorker进程数量
         $worker->count = App::isLinux() ? App::config('business.count') : 1;
         // 服务注册地址
-        $worker->registerAddress = App::config('register.other');;
+        $worker->registerAddress = App::config('register.connect').':'.App::config('register.port');
         $worker->eventHandler    = WsEvent::class;
     }
 }

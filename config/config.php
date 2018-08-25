@@ -23,9 +23,9 @@ return [
     ],
 
     'register' => [
-        'socket' => env('REGISTER_SOCKET', 'text://0.0.0.0:8060'),
-        // 其他主机设置这个
-        'other' => env('REGISTER_OTHER', '127.0.0.1:8060'),
+        // 'socket'  => env('REGISTER_SOCKET', '0.0.0.0'),
+        'connect' => env('REGISTER_OTHER', '127.0.0.1'),
+        'port'    => env('REGISTER_PORT', 8060),
     ],
 
     'business' => [
@@ -39,7 +39,7 @@ return [
     'gateway'  => [
         'socket'     => env('GATEWAY_SOCKET', 'WebSocket://0.0.0.0:8070'),
         'name'       => env('GATEWAY_NAME', 'WebSocket'),
-        'lan_ip'     => env('GATEWAY_LANIP', '127.0.0.1'),
+        'lan_ip'     => env('GATEWAY_LANIP', '0.0.0.0'),
         'start_port' => env('GATEWAY_START_PORT', '4000'),
         'count'      => env('GATEWAY_COUNT', 1),
     ],

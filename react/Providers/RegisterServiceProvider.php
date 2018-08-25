@@ -43,6 +43,6 @@ class RegisterServiceProvider implements ServiceProviderInterface
 
     public function listen()
     {
-        new Register(App::config('register.socket'));
+        new Register("text://".App::config('register.socket','0.0.0.0').':'.App::config('register.port'));
     }
 }

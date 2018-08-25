@@ -7,5 +7,11 @@
  * Time: 15:53
  */
 
+use App\App;
+
 require 'define.php';
 require 'bootstrap.php';
+
+/** @var \ReactApp\Providers\ConsoleServiceProvider $application */
+$application = App::getService('console');
+$application->run();

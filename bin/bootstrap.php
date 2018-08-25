@@ -17,7 +17,3 @@ AnnotationFactory::init([
     'App\\Providers\\',
     'ReactApp\\Providers\\'
 ]);
-
-/** @var \ReactApp\Providers\ConsoleServiceProvider $application */
-$application = App::getService('console');
-$application->run();

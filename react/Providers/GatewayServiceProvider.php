@@ -55,6 +55,6 @@ class GatewayServiceProvider implements ServiceProviderInterface
         // 则一般会使用4000 4001 4002 4003 4个端口作为内部通讯端口
         $gateway->startPort = App::config('gateway.start_port');
         // 服务注册地址
-        $gateway->registerAddress = App::config('register.other');
+        $gateway->registerAddress = App::config('register.connect').':'.App::config('register.port');
     }
 }
