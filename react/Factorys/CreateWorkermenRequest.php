@@ -16,7 +16,7 @@ class CreateWorkermenRequest
 {
     public static function create(array $date):ServerRequestInterface
     {
-        return new ServerRequest(
+        $request = new ServerRequest(
             $date["server"]["REQUEST_METHOD"]??"GET",
             $date["server"]["REQUEST_URI"]??"/",
             $date["server"]??[],
@@ -24,5 +24,12 @@ class CreateWorkermenRequest
             $date["server"]["SERVER_PROTOCOL"]??"HTTP/1.1",
             $date["server"]??[]
         );
+
+        // Add query params
+        $request = $request->withQueryParams($date['get']);
+        $request = $request->withParsedBody($date['post']);
+        $request = $request->withUploadedFiles($date['files']);
+
+        return $request;
     }
 }

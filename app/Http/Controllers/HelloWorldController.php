@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
 use ReactApp\Annotations\RequestMapping;
 
@@ -16,10 +17,12 @@ class HelloWorldController
     /**
      * 全局路由
      * @RequestMapping("/")
+     * @param ServerRequestInterface $request
+     * @return array
      */
-    public function helloWorld()
+    public function helloWorld(ServerRequestInterface $request)
     {
-        return ['time'=>time()];
+        return ['time'=>time(),'query'=>$request->getQueryParams(),'parsed'=>$request->getParsedBody()];
     }
 
     /**
