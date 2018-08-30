@@ -19,7 +19,7 @@ return [
      * 全局中间件
      */
     'middleware' => [
-
+        \App\Middlewares\WhoopsMiddleware::class
     ],
 
     'register' => [
