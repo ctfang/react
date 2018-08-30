@@ -33,6 +33,8 @@ class RouteServiceProvider implements ServiceProviderInterface
 
     private $requestMappingAnnotations;
 
+    private $middleware = [];
+
     /**
      * 加载过程触发
      *
@@ -103,7 +105,7 @@ class RouteServiceProvider implements ServiceProviderInterface
                         if (!isset($this->routes[$key])) {
                             $routeHelper = new RouteHelper();
                             foreach ($queue as $mid) {
-                                $routeHelper->addMiddleware(new $mid());
+                                $routeHelper->addMiddleware($this->getMiddleware($mid));
                             }
                             $this->routes[$key] = $routeHelper;
                         } else {
@@ -124,12 +126,12 @@ class RouteServiceProvider implements ServiceProviderInterface
                             $this->requestMappingAnnotations[$key] = $annotation;
                         } elseif ($annotation instanceof Middleware) {
                             $mid = $annotation->getClass();
-                            $routeHelper->addMiddleware(new $mid());
+                            $routeHelper->addMiddleware($this->getMiddleware($mid));
                         } elseif ($annotation instanceof Middlewares) {
                             /** @var Middleware $middleware */
                             foreach ($annotation->getMiddlewares() as $middleware) {
                                 $mid = $middleware->getClass();
-                                $routeHelper->addMiddleware(new $mid());
+                                $routeHelper->addMiddleware($this->getMiddleware($mid));
                             }
                         }
 
@@ -139,9 +141,19 @@ class RouteServiceProvider implements ServiceProviderInterface
             }
         }
 
+        unset($this->middleware);
+
         foreach ($this->routes as $key => $routeHelper) {
             if (!isset($this->requestMappingAnnotations[$key])) break;
             yield [$this->requestMappingAnnotations[$key], $routeHelper];
         }
+    }
+
+    private function getMiddleware($mid)
+    {
+        if( !isset($this->middleware[$mid]) ){
+            $this->middleware[$mid] = new $mid();
+        }
+        return $this->middleware[$mid];
     }
 }
