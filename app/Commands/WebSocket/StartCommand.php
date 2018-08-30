@@ -16,6 +16,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Workerman\Worker;
 
+/**
+ * Class StartCommand
+ * @package App\Commands\WebSocket
+ * @\ReactApp\Annotations\Command()
+ */
 class StartCommand extends Command
 {
     protected function configure()

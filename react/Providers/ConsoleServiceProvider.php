@@ -32,6 +32,8 @@ class ConsoleServiceProvider implements ServiceProviderInterface
      * 加载过程触发
      *
      * @return void
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \ReflectionException
      */
     public function boot()
     {
@@ -39,10 +41,18 @@ class ConsoleServiceProvider implements ServiceProviderInterface
         $directory = new DirectoryHelper();
         $directory->setLoader($loader);
         $directory->setScanNamespace($this->namespaces);
+        $reader = new AnnotationReader();
 
         foreach ($directory->scanClass() as $class) {
             if (class_exists($class)) {
-                $this->commands[] = $class;
+
+                $reflectionClass  = new \ReflectionClass($class);
+                $classAnnotations = $reader->getClassAnnotations($reflectionClass);
+                foreach ($classAnnotations AS $annotation) {
+                    if( $annotation instanceof \ReactApp\Annotations\Command){
+                        $this->commands[] = $class;
+                    }
+                }
             }
         }
     }

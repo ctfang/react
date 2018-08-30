@@ -9,16 +9,18 @@
 namespace App\Commands\Http;
 
 
+use App\App;
 use Symfony\Component\Console\Command\Command;
 use Workerman\Worker;
 
-class HttpCommand extends Command
+abstract class HttpCommand extends Command
 {
     public function setWorker($cmd='start')
     {
         global $argv;
 
-        $argv[0] = $argv[0].'http';
+        Worker::$pidFile = App::getRuntimePath("/pid")."/http.pid";
+
         $argv[1] = $cmd;
 
         Worker::runAll();

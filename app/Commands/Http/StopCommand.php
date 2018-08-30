@@ -12,6 +12,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Workerman\Worker;
 
+/**
+ * Class StopCommand
+ * @package App\Commands\Http
+ * @\ReactApp\Annotations\Command()
+ */
 class StopCommand extends HttpCommand
 {
     protected function configure()

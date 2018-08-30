@@ -31,6 +31,21 @@ class ReactApp
     }
 
     /**
+     * 获取日记目录
+     *
+     * @param string $dir
+     * @return string
+     */
+    public static function getRuntimePath($dir=''):string
+    {
+        $logPath = __ROOT_PATH__.'/runtime'.$dir;
+        if( !is_dir($logPath) ){
+            mkdir($logPath,0755,true);
+        }
+        return realpath($logPath);
+    }
+
+    /**
      * 设置服务
      *
      * @param string $name

@@ -13,6 +13,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Workerman\Worker;
 
+/**
+ * Class StopCommand
+ * @package App\Commands\WebSocket
+ * @\ReactApp\Annotations\Command()
+ */
 class StopCommand extends Command
 {
     protected function configure()
