@@ -13,6 +13,7 @@ use App\App;
 use ReactApp\Providers\HttpServiceProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Workerman\Worker;
 
@@ -25,12 +26,27 @@ class StartCommand extends Command
     {
         $this
             ->setName('http:start')
+            ->addOption(
+                "domain",
+                null,
+                InputOption::VALUE_OPTIONAL,
+                "是否守护进程运行",
+                0
+            )
             ->setDescription('开启http服务')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $domain = $input->getOption("domain");
+
+        if( $domain  || $domain===null ){
+            $output->writeln("<info>守护进程启动</info>");
+
+            Worker::$daemonize = true;
+        }
+
         /** @var HttpServiceProvider $http */
         $http = App::getService("http");
 
