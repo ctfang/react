@@ -18,7 +18,7 @@ use Workerman\Worker;
  * @package App\Commands\WebSocket
  * @\ReactApp\Annotations\Command()
  */
-class StopCommand extends Command
+class StopCommand extends WebSocketCommand
 {
     protected function configure()
     {
@@ -30,9 +30,6 @@ class StopCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        global $argv;
-        $argv[1] = 'stop';
-
-        Worker::runAll();
+        $this->setWorker("stop");
     }
 }

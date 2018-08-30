@@ -20,7 +20,7 @@ use Workerman\Worker;
  * @package App\Commands\WebSocket
  * @\ReactApp\Annotations\Command()
  */
-class StartDebugCommand extends Command
+class StartDebugCommand extends WebSocketCommand
 {
     protected function configure()
     {
@@ -34,9 +34,6 @@ class StartDebugCommand extends Command
     {
         App::getService("business")->listen();
 
-        global $argv;
-        $argv[1] = 'start';
-
-        Worker::runAll();
+        $this->setWorker("start");
     }
 }
