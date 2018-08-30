@@ -11,13 +11,12 @@ namespace App\Commands\Http;
 
 use App\App;
 use ReactApp\Providers\HttpServiceProvider;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Workerman\Worker;
 
-class StartCommand extends Command
+class StartCommand extends HttpCommand
 {
     public $input;
     public $output;
@@ -52,9 +51,6 @@ class StartCommand extends Command
 
         $http->listen();
 
-        global $argv;
-        $argv[1] = 'start';
-
-        Worker::runAll();
+        $this->setWorker('start');
     }
 }
