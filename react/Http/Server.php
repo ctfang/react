@@ -42,6 +42,9 @@ class Server extends EventEmitter
         $socket->onMessage = function (TcpConnection $connection, $data) {
 
             $request  = CreateWorkermenRequest::create($data);
+
+            $request = $request->withAttribute('connection',$connection);
+
             /** @var ResponseInterface $response */
             $response = ($this->requestHandler)($request);
 
@@ -69,6 +72,8 @@ class Server extends EventEmitter
 
         Http::header('Http-Code:',false,$code);
 
-        $connection->send($body);
+        if( $body->getSize() ){
+            $connection->send($body);
+        }
     }
 }
