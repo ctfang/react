@@ -18,6 +18,11 @@ class ReactApp
     private static $service = [];
     /** @var ClassLoader  */
     private static $loader;
+    /** @var array 优先执行，不受注解影响 */
+    public static $before = [
+        "env",
+        "config",
+    ];
 
     /**
      * 获取服务对象

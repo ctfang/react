@@ -49,7 +49,6 @@ class AnnotationFactory
     public static function scanAnnotation(DirectoryHelper $directory)
     {
         $reader             = new AnnotationReader();
-
         $serviceAnnotations = [];
         foreach ($directory->scanClass() as $class) {
             if (class_exists($class)) {
@@ -58,29 +57,35 @@ class AnnotationFactory
 
                 foreach ($classAnnotations AS $annotation) {
                     if ($annotation instanceof Service) {
+                        if( isset($serviceAnnotations[$annotation->name]) ) continue;
                         $annotation->className = $class;
-                        $serviceAnnotations[($annotation->sort+10000).$class] = $annotation;
+                        $serviceAnnotations[$annotation->name] = $annotation;
                     }
                 }
             }
         }
+
+        foreach (App::$before as $i=>$name){
+            $annotation = $serviceAnnotations[$name];
+            $annotation->sort = 90000+$i;
+        }
+
+        foreach ($serviceAnnotations as $name=>$annotation){
+            $serviceAnnotations[($annotation->sort+10000).$name] = $annotation;
+            unset($serviceAnnotations[$name]);
+        }
+
         ksort($serviceAnnotations);
 
-        foreach ($serviceAnnotations as $key=>$annotation){
-            unset($serviceAnnotations[$key]);
-            $class = $annotation->className;
-            $serviceAnnotations[$annotation->name] = new $class();
-        }
-        /** @var ServiceProviderInterface $object */
-        foreach ($serviceAnnotations as $name=>$object){
+        foreach ($serviceAnnotations as $annotation){
+            $class  = $annotation->className;
+            $object = new $class();
             $object->boot();
-            $serviceAnnotations[$name] = $object;
+            App::setService($annotation->name,$object);
         }
-        foreach ($serviceAnnotations as $name=>$object){
-            App::setService($name,$object);
-        }
-        foreach ($serviceAnnotations as $name=>$object){
-            App::getService($name)->register();
+
+        foreach ($serviceAnnotations as $annotation){
+            App::getService($annotation->name)->register();
         }
         unset($serviceAnnotations);
     }

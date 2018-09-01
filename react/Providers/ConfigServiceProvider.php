@@ -15,7 +15,7 @@ use ReactApp\Annotations\Service;
 
 /**
  * Class ConfigServiceProvider
- * @Service("config",sort="10")
+ * @Service("config")
  * @package ReactApp\Providers
  */
 class ConfigServiceProvider extends AbstractConfig implements ServiceProviderInterface
@@ -57,6 +57,7 @@ class ConfigServiceProvider extends AbstractConfig implements ServiceProviderInt
      */
     public function register()
     {
+
     }
 
     /**

@@ -14,7 +14,7 @@ use ReactApp\Annotations\Service;
 
 /**
  * Class EnvServiceProvider
- * @Service("env",sort="1")
+ * @Service("env")
  * @package ReactApp\Providers
  */
 class EnvServiceProvider implements ServiceProviderInterface
@@ -22,7 +22,7 @@ class EnvServiceProvider implements ServiceProviderInterface
     /**
      * @return void
      */
-    public function __construct()
+    public function boot()
     {
         if (!file_exists(__ROOT_PATH__ . '/.env')) {
             if (!file_exists(__ROOT_PATH__ . '/.env.example')) {
@@ -71,15 +71,5 @@ class EnvServiceProvider implements ServiceProviderInterface
     public function register()
     {
         // TODO: Implement register() method.
-    }
-
-    /**
-     * 加载过程触发
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        // TODO: Implement boot() method.
     }
 }
