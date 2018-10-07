@@ -9,7 +9,7 @@
 namespace ReactApp\Factorys;
 
 
-use Interop\Http\Factory\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use React\Http\Response;
 
@@ -22,7 +22,7 @@ class CreateWorkermenResponse implements ResponseFactoryInterface
      *
      * @return ResponseInterface
      */
-    public function createResponse($code = 200)
+    public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
     {
         return new Response($code);
     }
