@@ -19,7 +19,8 @@ return [
      * 全局中间件
      */
     'middleware' => [
-        \App\Middlewares\WhoopsMiddleware::class
+        \App\Middlewares\WhoopsMiddleware::class,
+        \App\Middlewares\CorsMiddleware::class
     ],
 
     'register' => [

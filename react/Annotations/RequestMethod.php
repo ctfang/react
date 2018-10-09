@@ -39,5 +39,5 @@ class RequestMethod
     /**
      * Options method
      */
-    const OPTIONS = 'options';
+    const OPTIONS = 'OPTIONS';
 }

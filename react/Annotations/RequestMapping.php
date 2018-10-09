@@ -28,7 +28,7 @@ class RequestMapping
      *
      * @var array
      */
-    private $method = [RequestMethod::GET, RequestMethod::POST];
+    private $method = [RequestMethod::GET, RequestMethod::POST,RequestMethod::OPTIONS];
 
     /**
      * {"id"="\d+"}

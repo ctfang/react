@@ -74,6 +74,9 @@ class Server extends EventEmitter
 
         if( $body->getSize() ){
             $connection->send($body);
+        }else{
+            $connection->send('');
+            $connection->close();
         }
     }
 }

@@ -19,6 +19,7 @@ use ReactApp\Helper\RouteHelper;
 use ReactApp\Middlewares\ResponseFactoryMiddleware;
 use Relay\Relay;
 use Relay\RequestHandler;
+use RingCentral\Psr7\Stream;
 
 /**
  * Class DispatcherServiceProvider
@@ -83,10 +84,6 @@ class DispatcherServiceProvider implements ServiceProviderInterface
 
         if ($route[0] === Dispatcher::NOT_FOUND) {
             return Factory::createResponse(404);
-        }
-
-        if ($route[0] === Dispatcher::METHOD_NOT_ALLOWED) {
-            return Factory::createResponse(405)->withHeader('Allow', implode(', ', $route[1]));
         }
 
         foreach ($route[2] as $name => $value) {
